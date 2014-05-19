@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+
+</head>
+<body>
+<input id="test1" readonly="true">
+<button id="test2">a</button>
+<script>
+	document.getElementById('test1').addEventListener('input',function(){
+		alert("test");
+	}, false)
+	document.getElementById('test2').onclick = function(){
+		document.getElementById("test1").value = 123;
+	}
+</script>
+</body>
+</html>

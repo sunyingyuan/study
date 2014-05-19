@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+	<title>class test</title>
+	<meta charset="utf-8">
+	<script data-main="test" src="require.js"></script>
+	<script>
+		var toString = Object.prototype.toString;
+		//测试isArray
+		var isArray = Array.isArray || function(val){
+			return toString.call(val) === '[object Array]';
+		}
+		var arr = new Array();
+		//arr = [1, 2];
+		console.log(toString.call(arr));
+		console.log(Array.isArray(arr));
+		//测试isFunction
+		var isFunction = function (val) {
+			return toString.call(val) === '[object Function]';
+		};
+		var fun = function(){};
+		console.log(toString.call(fun));
+		console.log(isFunction(fun));
+
+		//测试indexOf
+		var indexOf = Array.prototype.indexOf ?
+				function (arr, item) {
+					return arr.indexOf(item);
+				} :
+				function (arr, item) {
+					for (var i = 0, len = arr.length; i < len; i++) {
+						if (arr[i] === item) {
+							return i;
+						}
+					}
+					return -1;
+				}
+		var arr2 = [1, 2, 3, 4, 5];
+		console.log(indexOf(arr2, 5));
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

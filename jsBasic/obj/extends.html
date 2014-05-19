@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		function Person(name, sex){
+			this.name = name;
+			this.sex = sex;
+		}
+		Person.prototype.showName = function(){
+			alert(this.name);
+		}
+		Person.prototype.showSex = function(){
+			alert(this.sex);
+		}
+
+		function Worker(name, sex, job){
+			Person.call(this, name, sex);
+			this.job = job;
+		}
+		for(var i in Person.prototype){
+			Worker.prototype[i] = Person.prototype[i];
+		}
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

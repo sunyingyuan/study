@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Regular Expression</title>
+	<script src="../../live.js"></script>
+	<script>
+		var reg = /\d/;
+		//var reg2 = new RegExp("/\d/","g");
+		var reg3 = /\d/;
+		var reg4 = new RegExp("\\d");
+		var reg5 = /([' "])[^' "]\1/;
+		//alert("abc".match(reg5));
+		var reg6 = "^\\d+$";
+		var reg7 = /^-[0-9]*[1-9][0-9]*$/g;
+		//alert("-10".match(reg7));
+		var reg8 = /\d/;
+		//alert(reg8.exec("abc") === null);
+		alert(reg8.test("abcw"));
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

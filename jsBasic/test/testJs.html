@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script>
+		var toString = Object.prototype.toString;
+		var isFunction = function (val) {
+			return toString.call(val) === '[object Function]'
+			//判断某个对象值属于哪种内置类型
+		}
+		function test(){
+
+		}
+		var arr = new Array();
+		//alert(isFunction(test));
+//		alert(toString.call(test));
+//		alert(typeof(test));
+//		alert(toString.call(arr));
+//		alert(typeof(arr));
+		alert(test[[Class]]);
+	</script>
+</head>
+<body>
+
+</body>
+</html>
