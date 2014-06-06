@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		function inheritPrototype(subType, superType){
+			var prototype = object(superType.prototype);
+			prototype.constructor = subType;
+			subType.prototype = prototype;
+		}
+	</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the5fire-backbone-model</title>
+</head>
+<body>
+</body>
+<script src="jquery-1.11.0.js"></script>
+<script src="underscore.js"></script>
+<script src="backbone.js"></script>
+<script>
+	(function ($) {
+		var Man = Backbone.Model.extend({
+			initialize: function(){
+				alert('Hey, you create me!');
+				//初始化时绑定监听
+				this.bind("change:name", function(){
+					var name = this.get("name");
+					alert("你改变了name属性为：" + name);
+				});
+			},
+			defaults: {
+				name: '张三',
+				age: '38'
+			},
+			aboutMe: function(){
+				return '我叫' + this.get('name') + ',今年' + this.get('age') + '岁';
+			}
+		});
+
+		var man = new Man();
+		man.set({name: 'the5fire'});
+		man.set({name: 'the5fire.com'});
+	})(jQuery);
+</script>
+</html>

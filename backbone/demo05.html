@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the5fire-backbone-model</title>
+</head>
+<body>
+</body>
+<script src="jquery-1.11.0.js"></script>
+<script src="underscore.js"></script>
+<script src="backbone.js"></script>
+<script>
+	(function ($) {
+		var Man = Backbone.Model.extend({
+			initialize: function(){
+				alert('Hey, you create me!');
+			}
+		});
+
+		var man = new Man();
+		man.set({name: 'the5fire', age: '10'});
+		alert(man.get('name'));
+	})(jQuery);
+</script>
+</html>
