@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Dialog - Default functionality</title>
+	<link rel="stylesheet" href="../jquery-ui-1.10.4.custom.css">
+	<script src="../jquery-1.10.2.js"></script>
+	<script src="../jquery-ui-1.10.4.custom.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<script>
+		$(function() {
+			$( "#dialog" ).dialog({
+				title: "Test",
+				buttons: {
+					'love': function(){},
+					'close': function(){
+						this.close();
+					}
+				},
+				position: 'right',
+				//maxHeight: 200
+				height: 200,
+				show: 'blind',
+				hide: 'blind',
+				//modal: true,
+				closeText: '关闭',
+				focus: function(event, ui) {
+					console.log(event);
+					console.log(ui);
+					//alert("test");
+				}
+			});
+		});
+
+		$("#test").click(function(){
+			$("#dialog").dialog('close');
+		});
+	</script>
+</head>
+<body>
+
+<div id="dialog" title="Basic dialog">
+	<p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+
+<button id="test">a</button>
+
+
+</body>
+</html>

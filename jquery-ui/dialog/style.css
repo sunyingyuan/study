@@ -1,0 +1,4 @@
+/*修改dialog头部样式*/
+.ui-widget-header {
+    background: url("../img/ui_header_bg.png");
+}
