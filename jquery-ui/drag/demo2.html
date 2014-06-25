@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Draggable + Sortable</title>
+	<link rel="stylesheet" href="../jquery-ui-1.10.4.custom.css">
+	<link rel="stylesheet" href="style.css">
+
+	<style>
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			margin-bottom: 10px;
+		}
+
+		li {
+			margin: 5px;
+			padding: 5px;
+			width: 150px;
+			float: left;
+		}
+	</style>
+
+</head>
+<body>
+
+<div class="test1">
+	<ul>
+		<li id="draggable" class="ui-state-highlight">Drag me down</li>
+	</ul>
+</div>
+
+<div class="test2">
+	<ul id="sortable">
+		<li class="ui-state-default">Item 1</li>
+		<li class="ui-state-default">Item 2</li>
+		<li class="ui-state-default">Item 3</li>
+		<li class="ui-state-default">Item 4</li>
+		<li class="ui-state-default">Item 5</li>
+	</ul>
+</div>
+
+<script src="../jquery-1.10.2.js"></script>
+<script src="../jquery-ui-1.10.4.custom.js"></script>
+
+<script>
+	$(function () {
+		$("#sortable").sortable({
+			revert: true
+		});
+		$("#draggable").draggable({
+			connectToSortable: "#sortable",
+			helper: "clone",
+			revert: "invalid"
+		});
+		$("ul, li").disableSelection();
+	});
+</script>
+
+</body>
+</html>

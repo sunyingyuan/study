@@ -28,10 +28,10 @@
 <script>
 	$(function () {
 		$("#draggable1>ul>li").draggable({
-			opacity: 0.6,
-			//revert: true,
-			helper: "clone",
-			drag: function (event, ui) {
+			//opacity: 0.6,
+			revert: true
+			//helper: "clone",
+			/*drag: function (event, ui) {
 				$(this).removeClass("dragContent").addClass("dragging");
 				$("body").css("background-color", "#ccc");
 
@@ -39,7 +39,7 @@
 			stop: function (event, ui) {
 				$(this).removeClass("dragging").addClass("dragContent");
 				$("body").css("background-color", "#fff");
-			}
+			}*/
 		});
 		$("#droppable2>ul>li").draggable({
 			connectToSortable: "#sortable",
