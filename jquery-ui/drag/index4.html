@@ -1,0 +1,28 @@
+<html>
+<head></head>
+<body>
+
+<div id="dragsource">
+	<p>拽我!</p>
+</div>
+<div id="container" style="background-color:gray;height:300">
+</div><!-- End container -->
+<link rel="stylesheet" href="../jquery-ui-1.10.4.custom.css">
+<script src="../jquery-1.10.2.js"></script>
+<script src="../jquery-ui-1.10.4.custom.js"></script>
+<script>
+	$(function() {
+		$( "#dragsource" ).draggable({
+			helper:"clone"
+		});
+
+		$("#container").droppable({
+			drop:function(event,ui){
+				$(this).append($("<p style='position:absolute;left:"+
+						ui.offset.left+";top:"+ui.offset.top+"'>clone</p>"));
+			}
+		});
+	})
+</script>
+</body>
+</html>

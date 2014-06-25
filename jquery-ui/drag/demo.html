@@ -1,0 +1,62 @@
+<html>
+<head>
+	<!-- css -->
+	<link rel="stylesheet" href="../jquery-ui-1.10.4.custom.css">
+	<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<!--content-->
+<div id="draggable1" class="draggable">
+	<ul>
+		<li class="dragContent">test1</li>
+		<li class="dragContent">test2</li>
+		<li class="dragContent">test3</li>
+	</ul>
+</div>
+
+<div id="droppable2" class="droppable">
+	<ul>
+		<li class="dropContent">test</li>
+	</ul>
+</div>
+
+<!-- script -->
+<script src="../jquery-1.10.2.js"></script>
+<script src="../jquery-ui-1.10.4.custom.js"></script>
+<script>
+	$(function () {
+		$("#draggable1>ul>li").draggable({
+			opacity: 0.6,
+			//revert: true,
+			helper: "clone",
+			drag: function (event, ui) {
+				$(this).removeClass("dragContent").addClass("dragging");
+				$("body").css("background-color", "#ccc");
+
+			},
+			stop: function (event, ui) {
+				$(this).removeClass("dragging").addClass("dragContent");
+				$("body").css("background-color", "#fff");
+			}
+		});
+		$("#droppable2>ul>li").draggable({
+			connectToSortable: "#sortable",
+			helper: "clone",
+			revert: "invalid"
+		});
+		$("#droppable2").droppable({
+			activeClass: "ui-state-hover",
+			hoverClass: "ui-state-active",
+			drop: function (event, ui) {
+				$(this)
+						.addClass("ui-state-highlight")
+						.find("p")
+						.html("Dropped!");
+			}
+		});
+	});
+</script>
+</body>
+</html>

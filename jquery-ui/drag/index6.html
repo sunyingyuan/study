@@ -1,0 +1,36 @@
+<html>
+<head>
+	<style>
+		.draggable {background-color:green; width: 90px; height: 80px; padding: 5px; float: left; margin: 0 10px 10px 0; font-size: .9em; }
+		.droppable { width: 300px; height: 300px; background-color:red}
+
+	</style>
+</head>
+<body>
+<div id="draggable2" class="draggable">
+	<p>I revert when I'm not dropped</p>
+</div>
+
+<div id="droppable" class="droppable">
+	<p>Drop me here</p>
+</div>
+<link rel="stylesheet" href="../jquery-ui-1.10.4.custom.css">
+<script src="../jquery-1.10.2.js"></script>
+<script src="../jquery-ui-1.10.4.custom.js"></script>
+<script>
+	$(function() {
+		$( "#draggable2" ).draggable({ revert: "invalid",cursor: "move", cursorAt: { top: 56, left: 56 } });
+		$( "#droppable" ).droppable({
+			activeClass: "ui-state-hover",
+			hoverClass: "ui-state-active",
+			drop: function( event, ui ) {
+				$( this )
+						.addClass( "ui-state-highlight" )
+						.find( "p" )
+						.html( "Dropped!" );
+			}
+		});
+	});
+</script>
+</body>
+</html>

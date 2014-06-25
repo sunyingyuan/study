@@ -1,0 +1,47 @@
+<html>
+<head>
+
+</head>
+<body>
+<div id="dragsource">
+	<p id="targetMsg">:-|</p>
+</div>
+
+<div id="droppable" style="background-color:gray;height:300">
+	<p>Can drop! </p>
+</div>
+
+<link rel="stylesheet" href="../jquery-ui-1.10.4.custom.css">
+<script src="../jquery-1.10.2.js"></script>
+<script src="../jquery-ui-1.10.4.custom.js"></script>
+<script>
+	$(function() {
+		$( "#dragsource" ).draggable({
+			start: function(event,ui) {
+				$(this).find("p").html(":-S");
+			},
+			stop:function(event,ui){
+				$(this).find("p").html(":-|");
+			}
+		});
+
+		$( "#droppable" ).droppable({
+			activate: function(event,ui) {
+				$(this).find("p").html( "Drop here !" );
+			},
+			over: function(event,ui) {
+				$( this ).find( "p" ).html( "Oh, Yeah!" );
+
+			},
+			out: function(event,ui) {
+				$( this ).find( "p" ).html( "Don't leave me!" );
+
+			},
+			drop: function( event, ui ) {
+				$( this ).find( "p" ).html( "I've got it!" );
+			}
+		});
+	})
+</script>
+</body>
+</html>
