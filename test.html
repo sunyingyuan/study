@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%= render "layouts/head" %>
+	<link rel="stylesheet" href="/assets/tablecloth.css">
+	<script src="/assets/jquery.tablesorter.min.js"></script>
+</head>
+<body>
+<div id="wrapper" style="position:relative;">
+	<div class='container'>
+		<div class='row' style="padding-bottom:0px;" id='content-wrapper'>
+			<div class='col-xs-12 col-sm-12'>
+				<div class="page-header page-header-with-buttons">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-6">
+							<h1 class="pull-left">
+								<i class=""></i>
+                                <span>
+                                    选择广告位
+                                </span>
+							</h1>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-md-6">
+
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<div class="box">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12">
+							<div class="col-xs-12 col-sm-12">
+								<div class="tab-content">
+									<div id="tab1" class="tab-pane active">
+										<div class="panel panel-default">
+											<div class="panel-body" style="overflow-y:scroll;max-height: 300px;">
+												<div class="responsive-table">
+													<div>
+														<table id="commonMedia"
+														       class="table table-bordered table-hover table-striped">
+															<thead>
+															<tr>
+																<th class="text-center" style="width:5%;vertical-align: middle;">
+																	<input id="allChecked" type="checkbox"/></th>
+																<th id="position_id" style="width: 15%;vertical-align: middle;"
+																    class="text-center sorting">广告位ID
+																</th>
+																<th id="name" style="width: 15%;vertical-align: middle;"
+																    class="text-center sorting">广告位
+																</th>
+																<th id="buy_manner" style="width: 15%;vertical-align: middle;"
+																    class="text-center sorting">购买形式
+																</th>
+																<th id="publisher" style="width: 20%;vertical-align: middle;" class="text-center">
+																	媒体
+																</th>
+																<th id="channel" style="width: 20%;vertical-align: middle;" class="text-center">
+																	频道
+																</th>
+																<th id="channel" style="width: 20%;vertical-align: middle;" class="text-center">
+																	投放时间
+																</th>
+
+															</tr>
+															</thead>
+															<tbody>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-10 col-md-offset-5 col-sm-10 col-sm-offset-5">
+		<a id="save" class="btn btn-primary">
+			保存
+		</a>
+		<a id="cancel" class="btn popup-modal-dismiss">
+			取消
+		</a>
+		<!--<a class="popup-modal-dismiss" href="javascript:void(0)">Dismiss</a>-->
+	</div>
+</div>
+<script type="text/javascript">
+	var popSchedule = Pop.init({
+		width: 700,
+		height: 460,
+		modal: true,
+		title: '投放时间'
+	});
+
+	//    function viewPopSchedulePosition (id, type){
+	//       return "<a href='javascript:void(0);' onclick='putInAdSpace(" + id + ", " + type +")' >投放时间</a>";
+	//    }
+	//
+	//    function putInAdSpace(id, type){
+	//        if (type == "edit"){
+	//          popSchedule.load("./pop_edit_position_calendar.html?position_id=" + id + "&position_dates=" + $("#" + id).attr("value"));
+	//        } else {
+	//          popSchedule.load("./pop_show_position_calendar.html?position_id=" + id + "&position_dates=" + $("#" + id).attr("value"));
+	//        }
+	//    }
+
+	(function () {
+		//造数end
+		var grid = Grid.init({
+			holder: 'commonMedia',
+			bodyTemplate: '<tr><td class="text-center" style="vertical-align: middle;"><input name="childCheckbox" type="checkbox" @viewChecked({checked}) value={id} onclick="getChecked()" /></td><td class="text-center" style="vertical-align: middle;">{position_id}</td><td class="text-center"style="vertical-align: middle;">{name}</td><td class="text-center"style="vertical-align: middle;">{buy_manner}</td><td class="text-center" style="vertical-align: middle;">{publisher}</td><td class="text-center" style="vertical-align: middle;">{channel}</td><td class="text-center" style="vertical-align: middle;" id={id} value={dates} value_select={dates}>@viewPopSchedulePosition({id}, "edit" '+ $("#campaign_id").attr("value") + ', "pop_positions")</td></tr>',
+			dataSource: "/campaigns/<%= @campaign.id %>/positions.json?ad_id=" + parent.ad_id,
+			pageSize: 100,
+			sendOnPageSize: true,
+
+//            nopage:true
+		});
+		grid.onedited = function (node, type, oldVal, newVal) {
+			alert('old:' + oldVal + ",new:" + newVal);
+		}
+		grid.beforeSend = function () {
+			console.log('before send，可以在这里处理下数据整理工作');
+		};
+		grid.onfilled = function (data) {
+			$("[name='my-checkbox']").bootstrapSwitch();
+			console.log('表格数据渲染完成。您可以在此处理其他事件');
+		};
+		grid.modifyModel = function (model) {
+			console.log(model);
+		};
+		grid.onrowed = function (tr, data) {
+			console.log(tr, data)
+			var id = $(tr).children('td').eq(0).children('input').eq(0).val();
+			var minTime = $(tr).children('td').eq(7).html();
+			var maxTime = $(tr).children('td').eq(8).html();
+			//startTime
+			var startTimeId = '#startTime' + id;
+			var startTimeViewId = '#startTimeView' + id;
+			var startTimeViewHiddenId = '#start_time_hidden_' + id;
+			$(startTimeId).daterangepicker({
+				singleDatePicker: true,
+				//timePicker: true,
+				//timePickerIncrement: 30,
+//                format: 'YYYY-MM-DD HH:mm:ss',
+				format: 'YYYY-MM-DD',
+				startDate:minTime,
+				minDate:minTime,
+				maxDate:maxTime
+			},function (date) {
+//                $(startTimeViewId).html(date.format("YYYY-MM-DD HH:mm:ss"));
+//                $(startTimeViewHiddenId).val(date.format("YYYY-MM-DD HH:mm:ss"));
+				$(startTimeViewId).html(date.format("YYYY-MM-DD"));
+				$(startTimeViewHiddenId).val(date.format("YYYY-MM-DD"));
+
+				console.log("start " + $(startTimeViewHiddenId).attr("value"));
+			});
+			//endTime
+			var endTimeId = '#endTime' + id;
+			var endTimeViewId = '#endTimeView' + id;
+			var endTimeViewHiddenId = '#end_time_hidden_' + id;
+			$(endTimeId).daterangepicker({
+				singleDatePicker: true,
+				//timePicker: true,
+				//timePickerIncrement: 30,
+				//        format: 'YYYY-MM-DD HH:mm:ss',
+				format: 'YYYY-MM-DD HH:mm:ss',
+				startDate:minTime,
+				minDate:minTime,
+				maxDate:maxTime
+			},function (date) {
+//                $(endTimeViewId).html(date.format("YYYY-MM-DD HH:mm:ss"));
+//                $(endTimeViewHiddenId).val(date.format("YYYY-MM-DD HH:mm:ss"));
+				$(endTimeViewId).html(date.format("YYYY-MM-DD"));
+				$(endTimeViewHiddenId).val(date.format("YYYY-MM-DD"));
+				console.log("end " + $(endTimeViewHiddenId).attr("value"));
+
+			});
+
+		};
+		grid.send();
+		grid.oncolumned = function (tdOrth, data) {
+			console.log(tdOrth, data)
+		};
+		grid.onellipsised = function (node) {
+			console.log(node)
+		};
+		grid.send();
+
+		var css_order
+		var disabledColumns = [0];
+		$("#commonMedia").find('thead th').each(function(i){
+			if (disabledColumns.indexOf(i) < 0) {
+				$(this).addClass('header headerSortable');
+			}
+		});
+		$("#commonMedia").tablesorter({
+			cssHeader: '',
+			headers: {
+				0: {sorter: false}
+			}
+		});
+
+		$("#position_id").click(function(){
+			ret = sort_col($('#position_id'), 'positions.id', css_order);
+			filter(grid, {}, ret[0]);
+		});
+
+		$("#name").click(function(){
+			ret = sort_chinese($('#name'), 'positions.name', css_order);
+			filter(grid, {}, ret[0]);
+		});
+
+		$("#buy_manner").click(function(){
+			ret = sort_chinese($('#buy_manner'), 'buy_manners.name', css_order);
+			filter(grid, {}, ret[0]);
+		});
+
+		$("#publisher").click(function(){
+			ret = sort_chinese($('#publisher'), 'publishers.name', css_order);
+			filter(grid, {}, ret[0]);
+		});
+
+		$("#channel").click(function(){
+			ret = sort_chinese($('#channel'), 'channels.name', css_order);
+			filter(grid, {}, ret[0]);
+		});
+	})();
+	//    function viewCreativeStatusButton(id, status){
+	//        var buttonId = "changeButton" + id;
+	//        var shape = ""
+	//        if (status){
+	//            shape = "circle";
+	//        } else{
+	//            shape = "square";
+	//        }
+	//        return "<div id="+ buttonId +" class='statusDiv'><div class='"+shape+"'></div></div>";
+	//    }
+	function viewChecked(id) {
+		if (id == 1){
+			return "checked";
+		}
+	}
+	function setStartTime(id, defaultStartTime){
+		return '<span id="startTimeView'+id+'" type="text" style="width: 200px;border:0" value="'+ defaultStartTime +'">'+defaultStartTime+'</span><input id="start_time_hidden_'+id+'" type="hidden" value="'+ defaultStartTime +'"></input> <i style="cursor:pointer;" id="startTime'+id+'" value="'+ defaultStartTime +'" class="glyphicon glyphicon-calendar fa fa-calendar"></i>';
+	}
+	function setEndTime(id, defaultEndTime){
+		return '<span id="endTimeView'+id+'" type="text" style="width: 200px;border:0" value="'+ defaultEndTime +'">'+defaultEndTime+'</span><input id="end_time_hidden_'+id+'" type="hidden" value="'+ defaultEndTime +'"></input> <i style="cursor:pointer;" id="endTime'+id+'" value="'+ defaultEndTime +'" class="glyphicon glyphicon-calendar fa fa-calendar"></i>';
+	}
+
+	function viewDelete(id) {
+		return "<a href='javascript:void(0);' onclick='deletePosition(+" + id + ")' >删除</a>";
+	}
+	//全局变量，是否合适呢？暂时定为全局变量
+	var popDelete = Pop.init({
+		width: 700,
+		height: 390,
+		modal: true,
+		title: '投放时间'
+	});
+	function deletePosition(id) {
+		//后台判断是以哪种页面方式展现
+		//看后台如何处理的，如果后台能够控制返回的页面那么可以采用showDialog的方式
+		/**
+		 * function deleteProduct(productId) {
+             *   showDialog("<s:url value='/product/loadDelete'/>?productId="+productId, '删除产品信息', 500, 150);
+             * }
+		 * 路径：js/dialog.js
+		 */
+			//popDelete.load("../media/deleteMedia.html");
+		popDelete.load("../media/deletePosition.html", {width: 500, height: 230});
+	}
+	function viewSwitch(id) {
+		return '<div class="switch switch-mini"> <input type="checkbox" name="my-checkbox" data-size="mini" checked /> </div>';
+	}
+</script>
+<script type="text/javascript">
+
+	$(function () {
+		$("#daterangeIcon").daterangepicker({
+			format: "YYYY-MM-DD"
+		}, function (start, end) {
+			$("#selectedTime").val(start.format("YYYY-MM-DD") + "至" + end.format("YYYY-MM-DD"));
+		});
+
+		// 全选 or 全不选
+		$("#allChecked").bind("click", function () {
+			if($("#allChecked").attr('checked')){
+				$("[name = childCheckbox]:checkbox").attr("checked", true);
+			}else{
+				$("[name = childCheckbox]:checkbox").attr("checked", false);
+			}
+		});
+		$("input[name = childCheckbox]:checkbox").bind("click", function() {
+			if($("input[name = childCheckbox]:checkbox").size() == $("[name = childCheckbox]:checkbox:checked").size()){
+				$("#allChecked").attr("checked", true);
+			}else{
+				$("#allChecked").attr("checked", false);
+			}
+		});
+	})
+</script>
+<script>
+	var positions_dates = {
+		Set : function(key,value){this[key] = value},
+		Get : function(key){return this[key]},
+		Contains : function(key){return this.Get(key) == null?false:true},
+		Remove : function(key){delete this[key]}
+	};
+	$("#save").click(function(tr, data){
+		var checkboxValues = new Array();
+		console.log($("[name = childCheckbox]:checkbox:checked"));
+		$.each($("[name = childCheckbox]:checkbox:checked"),function(index, value){
+			console.log("values::" + this.value);
+			checkboxValues.push(this.value);
+			if (positions_dates.Get(this.value) == undefined){
+				positions_dates.Set(this.value, $("#" + this.value).attr("value"))
+			} else {
+
+			}
+		});
+		parent.positions_dates = positions_dates;
+		parent.positionGrid.send({"ids": checkboxValues.join(','), "positions_dates": encodeURIComponent(JSON.stringify(positions_dates)), "save": "yes"});
+		parent.popPosition.close();
+	});
+	$("#cancel").click(function(){
+		parent.popPosition.close();
+	});
+	var getChecked = function() {
+		if($("input[name = childCheckbox]:checkbox").size() == $("[name = childCheckbox]:checkbox:checked").size()){
+			$("#allChecked").attr("checked", true);
+		}else{
+			$("#allChecked").attr("checked", false);
+		}
+	}
+
+	$(".popup-modal-dismiss").click(function(){
+		$.magnificPopup.close();
+	});
+	$(document).on('click', '.popup-modal-dismiss', function (e) {
+		e.preventDefault();
+		$.magnificPopup.close();
+	});
+</script>
+</body>
+</html>
